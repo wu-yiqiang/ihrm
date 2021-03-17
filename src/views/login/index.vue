@@ -107,7 +107,7 @@ export default {
           { required: true, message:'The password cannot be empty',trigger: 'blur'},
           {message:'The password can not be less than 6 digits', min:6, max:16, trigger: 'blur'}
         ]
-      },
+      }, 
       passwordType: 'password',
       capsTooltip: false,
       loading: false,
