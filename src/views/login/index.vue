@@ -47,7 +47,7 @@
         </el-form-item>
       </el-tooltip>
 
-      <el-button class="loginBtn"  type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+      <el-button class="loginBtn" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
 
       <div style="position:relative">
         <div class="tips">
@@ -74,7 +74,7 @@
 <script>
 import { validMobile } from '@/utils/validate'
 import SocialSign from './components/SocialSignin'
-
+import {mapActions} from 'vuex'
 export default {
   name: 'Login',
   components: { SocialSign },
@@ -142,6 +142,7 @@ export default {
     // window.removeEventListener('storage', this.afterQRScan)
   },
   methods: {
+    ...mapActions(['user/login']),
     checkCapslock(e) {
       const { key } = e
       this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
@@ -157,20 +158,17 @@ export default {
       })
     },
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
+      this.$refs.loginForm.validate(async valid => {
         if (valid) {
-          this.loading = true
-          this.$store.dispatch('user/login', this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-              this.loading = false
-            })
-            .catch(() => {
-              this.loading = false
-            })
-        } else {
-          console.log('error submit!!')
-          return false
+          try {
+            this.loading = true
+            await this['user/login'](this.loginForm)
+            this.$router.push("/") 
+          } catch (error) {
+            
+          } finally {
+            this.loading = false
+          }
         }
       })
     },
