@@ -85,3 +85,20 @@ export function isArray(arg) {
   }
   return Array.isArray(arg)
 }
+
+/**
+ * @param {string} str
+ * @returns {Boolean}
+ */
+ export function validMobile(str) {
+   const reg = /^1[3|5|7]\d{9}$/
+   return reg.test(str)
+ }
+
+// /**
+//  * @param {string} str
+//  * @returns {Boolean}
+//  */
+//  export function validPassword(str) {
+//   return str.length > 6
+// }
