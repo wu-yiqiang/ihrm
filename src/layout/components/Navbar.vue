@@ -2,7 +2,11 @@
   <div class="navbar">
     <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+    <div class="app-breadcrumb">
+      擎云科技股份有限公司
+      <span class="breadBtn">体验版</span>
+    </div>
+    <!-- <breadcrumb id="breadcrumb-container" class="breadcrumb-container" /> -->
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
@@ -47,7 +51,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
+//import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
@@ -56,7 +60,7 @@ import Search from '@/components/HeaderSearch'
 
 export default {
   components: {
-    Breadcrumb,
+    //Breadcrumb,
     Hamburger,
     ErrorLog,
     Screenfull,
@@ -89,7 +93,7 @@ export default {
   position: relative;
   background: #fff;
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
-
+  background-image: -webkit-linear-gradient(left, #3d6df8, #5b8cff);
   .hamburger-container {
     line-height: 46px;
     height: 100%;
@@ -100,6 +104,24 @@ export default {
 
     &:hover {
       background: rgba(0, 0, 0, .025)
+    }
+    .app-breadcrumb {
+      display: inline-block;
+      font-size: 18px;
+      line-height: 50px;
+      margin-left: 10px;
+      color: #ffffff;
+      cursor: text;
+      .breadBtn {
+        background: #84a9fe;
+        font-size: 14px;
+        padding: 0 10px;
+        display: inline-block;
+        height: 30px;
+        line-height: 30px;
+        border-radius: 10px;
+        margin-left: 15px;
+      }
     }
   }
 
