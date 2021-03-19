@@ -16,6 +16,14 @@ export function getUserInfo() {
   })
 }
 
+/* 获取用户头像接口 */
+export function getUserDetailById(id) {
+  return request({
+    method: 'GET',
+    url: `/sys/user/${id}`
+  })
+}
+
 export function logout() {
 
 }

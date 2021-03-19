@@ -13,13 +13,18 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import store from './store'
 import router from './router'
-
+// 导入自定义指令
+import * as directives from '@/directive/index.js'
 import './icons' // icon
 import './permission' // permission control
 import './utils/error-log' // error log
 
 import * as filters from './filters' // global filters
+import { Object } from 'core-js'
 
+Object.keys(directives).forEach(key => {
+  Vue.directive(key, directives[key])
+})
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

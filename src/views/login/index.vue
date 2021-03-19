@@ -49,11 +49,11 @@
 
       <el-button class="loginBtn" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
 
-      <div style="position:relative">
-        <div class="tips">
+      <div style="position:relative; margin-top:30px">
+        <!-- <div class="tips">
           <span style="margin-right:18px;">Account : 13800000002</span>
           <span>Password : 123456</span>
-        </div>
+        </div> -->
 
         <el-button class="thirdparty-button" type="primary" @click="showDialog=true">
           Or connect with
@@ -142,7 +142,7 @@ export default {
     // window.removeEventListener('storage', this.afterQRScan)
   },
   methods: {
-    ...mapActions(['user/login']),
+      ...mapActions(['user/login']),
     checkCapslock(e) {
       const { key } = e
       this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
@@ -162,8 +162,8 @@ export default {
         if (valid) {
           try {
             this.loading = true
-            await this['user/login'](this.loginForm)
-            this.$router.push("/") 
+            await this.$store.dispatch('login',this.loginForm)
+            this.$router.push('/')
           } catch (error) {
             
           } finally {
