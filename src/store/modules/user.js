@@ -1,4 +1,4 @@
-import {getToken,setToken,removeToken} from '@/utils/auth'
+import {getToken,setToken,removeToken,setTimeStamp} from '@/utils/auth'
 import { login } from '@/api/user'
 import {getUserInfo, getUserDetailById} from '@/api/user.js'
 const state = {
@@ -15,7 +15,6 @@ const mutations = {
     // remove token
     state.token = null
     removeToken()
-    console.log('***代码调试中***', state.userInfo)
   },
   /* 设置用户信息 */
   setUserInfo(state,result) {
@@ -31,9 +30,8 @@ const actions = {
   async login(context,data) {
     // use login interface
     const result = await login(data)
-    if (result) {
-      context.commit('setToken', result)
-    }
+    context.commit('setToken', result)
+    setTimeStamp() // 设置当前时间戳
   },
   /* 获取用户信息 */
   async getUserInfo(context) {
