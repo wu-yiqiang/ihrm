@@ -5,7 +5,7 @@
       <el-card class="tree-card">
         <tree-tools :treeNode="company" :is-root="true"></tree-tools>
         <!-- 树形组件 -->
-        <el-tree :data="departs" :props="defaultProps" @node-click="handleNodeClick" :default-expand-all="true">
+        <el-tree :data="departs" :props="defaultProps"  :default-expand-all="true">
          <TreeTools slot-scope="{data}"  :treeNode="data"></TreeTools>
         </el-tree>
         <!-- /树形组件 -->
@@ -18,14 +18,12 @@
 <script>
 import TreeTools from './components/tree-tools'
 import {getDepartments} from '@/api/departments'
+import {tranListToTreeData} from '@/utils/index.js'
 export default {
   data() {
     return {
-      company:{name:'云擎科技有限公司', manager:'负责人'},
-      departs: [
-        { name: '总裁办',manager:'刘吉如', children: [{ name: '总经办',manager:'陈忠标' }] },
-        { name: '行政部',manager:'邓超凡' }, { name: '开发部',manager:'丰兴旺' }
-      ],
+      company:{},
+      departs: [],
       defaultProps: {
         children: 'children',
         label: 'name'
@@ -42,9 +40,10 @@ export default {
     /* 获取公司部门名称 */
     async getDepartments() {
       const result = await getDepartments()
-      this.departs = result.depts
       this.company = {name: result.companyName,manager: '负责人'}
-    }
+      this.departs = tranListToTreeData(result.depts, "")
+    },
+  
   }
 }
 </script>

@@ -2,6 +2,8 @@
  * Created by PanJiaChen on 16/11/18.
  */
 
+import { FormItem } from "element-ui"
+
 /**
  * Parse the time to string
  * @param {(Object|string|number)} time
@@ -354,4 +356,19 @@ export function removeClass(ele, cls) {
     const reg = new RegExp('(\\s|^)' + cls + '(\\s|$)')
     ele.className = ele.className.replace(reg, ' ')
   }
+}
+
+/* 将列表型数据转化为树形数据 */
+export function tranListToTreeData(params, rootValue) {
+  var arr = []
+  params.forEach(element => {
+    if (element.pid == rootValue) {
+      const children = tranListToTreeData(params, element.id)
+      if (children.length) {
+        element.children = children
+      }
+      arr.push(element)
+    }
+  })
+  return arr
 }
