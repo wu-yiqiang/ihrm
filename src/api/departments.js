@@ -7,3 +7,10 @@ export function getDepartments() {
     url:'/company/department'
   })
 }
+/* 删除组织架构 */
+export function deleteDepartments(id) {
+  return request({
+    method: 'DELETE',
+    url:`/company/department/${id}`
+  })
+}

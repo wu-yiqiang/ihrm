@@ -6,7 +6,7 @@
         <tree-tools :treeNode="company" :is-root="true"></tree-tools>
         <!-- 树形组件 -->
         <el-tree :data="departs" :props="defaultProps"  :default-expand-all="true">
-         <TreeTools slot-scope="{data}"  :treeNode="data"></TreeTools>
+         <TreeTools slot-scope="{data}"  :treeNode="data" @delDepts="getDepartments"></TreeTools>
         </el-tree>
         <!-- /树形组件 -->
       </el-card>
