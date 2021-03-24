@@ -23,7 +23,7 @@
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          <img v-imageerror="defaultImg" :src="starfPhoto" class="user-avatar">
+          <img v-imageerror="defaultImg" :src="staffPhoto" class="user-avatar">
           <span class="name">{{name}}</span>
           <i class="el-icon-caret-bottom" />
         </div>

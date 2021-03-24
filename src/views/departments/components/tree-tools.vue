@@ -55,7 +55,7 @@ export default {
     operateDepts(type) {
       if(type == 'add') {
         // 添加操作
-
+        this.$emit('addDept', this.treeNode)
       } else if(type == 'edit'){
         // 编辑操作
       } else {
