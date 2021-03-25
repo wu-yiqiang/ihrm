@@ -29,7 +29,7 @@
 
 <script>
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
-import {addDepartments, getDepartments,getDepartmentsDetail} from '@/api/departments.js'
+import {addDepartments, getDepartments,getDepartmentsDetail,updateDepartments} from '@/api/departments.js'
 import {getEmployeesList} from '@/api/employees'
 export default {
   name: 'addDept',
@@ -48,19 +48,31 @@ export default {
   data () {
     const checkNameRepeat =  async(rule,value,callback) => {
       const { depts } = await getDepartments()
-      const isRepeat = depts.filter( element => {
+      let isRepeat = false
+     if(this.formDate.id) {
+       // 编辑模式
+       isRepeat  = depts.filter(item => item.id=== this.treeNode.pid && item.id != this.treeNode.id).some(item => item.name == value)
+     } else {
+       // 新增模式
+        isRepeat = depts.filter( element => {
         return element.pid ==this.treeNode.pid
       }).some(item => {
         return item.name == value 
       })
+     }
       // console.log('***代码调试中******', isRepeat)
       isRepeat ? callback(new Error(`同级部门下已存在${value}部门`)) : callback()
     }
     const checkCodeRepeat = async (rule,value,callback) => {
       const { depts } = await getDepartments()
-      const isRepeat = depts.some( element => {
-        return element.code == value && value
-      })
+      let isRepeat = false
+      if(this.formDate.id) {
+        isRepeat = depts.filter(item => item.id !== this.treeNode.id).some(item => item.code == value && value)
+      } else {
+        isRepeat = depts.some( element => {
+          return element.code == value && value
+        })
+      }
       isRepeat ? callback(new Error(`${value}部门编码重复`)) : callback()
     }
     return {
@@ -111,7 +123,14 @@ export default {
     btnOk() {
       this.$refs.deptForm.validate(async validate => {
         if(validate) {
-          await addDepartments({...this.formDate,pid:this.treeNode.id})
+          if(this.formDate.id) {
+            // 编辑
+            await updateDepartments(this.formDate)
+          } else {
+            // 新增
+            await addDepartments({...this.formDate,pid:this.treeNode.id})
+          }
+          
           // 清除输入框内容
           this.$emit('update:showDialog',false)
           this.$emit('addDepts')
