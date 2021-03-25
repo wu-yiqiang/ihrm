@@ -6,13 +6,13 @@
         <TreeTools :treeNode="company" :is-root="true" @addDept='addDept'></TreeTools>
         <!-- 树形组件 -->
         <el-tree :data="departs" :props="defaultProps"  :default-expand-all="true">
-         <TreeTools slot-scope="{data}"  :treeNode="data" @delDepts="getDepartments" @addDept='addDept'></TreeTools>
+         <TreeTools slot-scope="{data}"  :treeNode="data" @delDepts="getDepartments" @addDept='addDept' @editDept='editDepts'></TreeTools>
         </el-tree>
         <!-- /树形组件 -->
       </el-card>
       <!-- /组织架构 -->
     </div>
-     <addDept :showDialog="showDialog"></addDept>
+     <addDept ref='addDept' :showDialog.sync="showDialog"  :treeNode="node" @addDepts="getDepartments"></addDept>
   </div>
 </template>
 
@@ -52,9 +52,14 @@ export default {
     },
    /* 添加子部门 */
    addDept (value) {
-     console.log('***代码调试中******', value)
      this.showDialog = true
      this.node = value
+   },
+   /* 编辑部门 */
+   editDepts (value) {
+     this.showDialog = true
+     this.node = value
+     this.$refs.addDept.getDepartmentsDetail(value.id)
    }
   }
 }

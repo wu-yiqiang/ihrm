@@ -39,8 +39,7 @@ service.interceptors.response.use((response)  => {
     store.dispatch('logout')
     router.push('/login')
   } else {
-  Message.error(error.message)
-
+    Message.error(error.message)
   }
   return Promise.reject(error)
 })

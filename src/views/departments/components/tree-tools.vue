@@ -58,6 +58,7 @@ export default {
         this.$emit('addDept', this.treeNode)
       } else if(type == 'edit'){
         // 编辑操作
+        this.$emit('editDept', this.treeNode)
       } else {
         //删除操作
         this.$confirm('此操作将永久删除该组织部门, 是否继续?', '提示', {

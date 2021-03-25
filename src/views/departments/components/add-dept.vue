@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="新增部门" :visible="showDialog" width="30%" >  
+  <el-dialog :title="showTitle" :visible="showDialog" width="30%" @close="btnCancel">  
     <el-form  label-width="100px" :model="formDate" :rules="rules" ref="deptForm">
       <el-form-item label="部门名称" prop="name">
         <el-input v-model="formDate.name" placeholder="1-50字符"></el-input>
@@ -19,7 +19,7 @@
     <!-- 确定提交 -->
     <el-row type="flex" justify="center" slot='footer'>
       <el-col :span="6">
-        <el-button  size="small">取消</el-button>
+        <el-button  size="small" @click="btnCancel">取消</el-button>
         <el-button  size="small" type="primary" @click="btnOk">确定</el-button>
       </el-col>
     </el-row>
@@ -29,7 +29,7 @@
 
 <script>
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
-import {addDepartments, getDepartments} from '@/api/departments.js'
+import {addDepartments, getDepartments,getDepartmentsDetail} from '@/api/departments.js'
 import {getEmployeesList} from '@/api/employees'
 export default {
   name: 'addDept',
@@ -46,13 +46,14 @@ export default {
     }
   },
   data () {
-    const checkNameRepeat = async (rule,value,callback) => {
+    const checkNameRepeat =  async(rule,value,callback) => {
       const { depts } = await getDepartments()
       const isRepeat = depts.filter( element => {
         return element.pid ==this.treeNode.pid
       }).some(item => {
-        return item.name == value
+        return item.name == value 
       })
+      // console.log('***代码调试中******', isRepeat)
       isRepeat ? callback(new Error(`同级部门下已存在${value}部门`)) : callback()
     }
     const checkCodeRepeat = async (rule,value,callback) => {
@@ -95,7 +96,11 @@ export default {
   created () {}, // 生命周期 - 创建完成（可以访问当前this实例）
   beforeMount () {}, // 生命周期 - 挂载之前
   mounted () {}, // 生命周期 - 挂载完成（可以访问DOM元素）
-  computed: {}, // 计算属性，会监听依赖属性值随之变化
+  computed: {
+    showTitle() {
+      this.formDate.id ? '新增部门' : '编辑部门'
+    }
+  }, // 计算属性，会监听依赖属性值随之变化
   watch: {}, // 监控data中的数据变化
   methods: {
     /* 获取负责人数据列表 */
@@ -106,15 +111,28 @@ export default {
     btnOk() {
       this.$refs.deptForm.validate(async validate => {
         if(validate) {
-          console.log(this.treeNode);
           await addDepartments({...this.formDate,pid:this.treeNode.id})
           // 清除输入框内容
-          this.formDate = {}
           this.$emit('update:showDialog',false)
           this.$emit('addDepts')
         }
       })
-    }  
+    },
+    btnCancel () {
+      this.$refs.deptForm.validateField()
+      this.formDate = {
+        name:'',
+        code:'',
+        manager: '',
+        introduce:""
+      }
+      this.$refs.deptForm.resetFields()
+      this.$emit('update:showDialog',false)
+    },
+    /* 获取当前部门详情 */
+    async getDepartmentsDetail(id) {
+      this.formDate = await getDepartmentsDetail(id)
+    } 
   }, // 方法集合
   beforeUpdate () {}, // 生命周期 - 更新之前
   updated () {}, // 生命周期 - 更新之后
