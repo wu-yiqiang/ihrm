@@ -22,7 +22,7 @@
           <el-table-column label="部门" sortable="" align="center" prop="departmentName"/>
           <el-table-column label="入职时间" sortable="" align="center" >
             <template slot-scope="scoped">
-              {{scoped.row.timeOfEntry | formatTime}}
+              {{scoped.row.timeOfEntry | formatDate}}
             </template>
           </el-table-column>
           <el-table-column label="账户状态" sortable="" align="center" prop="enableState">
