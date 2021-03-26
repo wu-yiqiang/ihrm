@@ -19,14 +19,20 @@ import './icons' // icon
 import './permission' // permission control
 import './utils/error-log' // error log
 
-import * as filters from './filters' // global filters
 import { Object } from 'core-js'
-/*  全局注册pageTools*/
-import component from '@/components'
-Vue.use(component)
 Object.keys(directives).forEach(key => {
   Vue.directive(key, directives[key])
 })
+/*  全局注册pageTools*/
+import component from '@/components'
+Vue.use(component)
+/* 注册全局过滤器 */
+import * as filters from './filters'
+Object.keys(filters).forEach(key => {
+  Vue.directive(key, filters[key])
+})
+
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

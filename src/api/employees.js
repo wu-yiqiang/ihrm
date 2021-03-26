@@ -15,3 +15,11 @@ export const getEmployeesLists = (params) => {
     params
   })
 }
+
+/* 删除员工 */
+export const deleteEmployee = (id) => {
+  return request({
+    method: 'DELETE',
+    url: `/sys/user/${id}`
+  })
+}
