@@ -21,7 +21,9 @@ import './utils/error-log' // error log
 
 import * as filters from './filters' // global filters
 import { Object } from 'core-js'
-
+/*  全局注册pageTools*/
+import component from '@/components'
+Vue.use(component)
 Object.keys(directives).forEach(key => {
   Vue.directive(key, directives[key])
 })

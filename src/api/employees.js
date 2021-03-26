@@ -7,3 +7,11 @@ export const getEmployeesList = () => {
     url:'/sys/user/simple'
   })
 }
+/* 获取员工复杂列表 */
+export const getEmployeesLists = (params) => {
+  return request({
+    method: 'GET',
+    url: '/sys/user',
+    params
+  })
+}

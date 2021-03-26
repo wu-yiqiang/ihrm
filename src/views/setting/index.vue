@@ -7,7 +7,7 @@
           <!-- 角色设置 -->
           <el-tab-pane label="角色设置" name="first" >
             <el-row>
-              <el-button type="primary" icon="el-icon-plus" size='small'>
+              <el-button type="primary" icon="el-icon-plus" size='small' @click="showDialog = true">
                 新增角色
               </el-button>
             </el-row>
@@ -18,7 +18,7 @@
               <el-table-column label="操作" align="center">
                 <template slot-scope="scoped">
                   <el-button type="success" size="mini">分配权限</el-button>
-                  <el-button type="primary" size="mini">编辑</el-button>
+                  <el-button type="primary" size="mini" @click="editRole(scoped.row.id)">编辑</el-button>
                   <el-button type="danger" size="mini" @click="deleteRole(scoped.row.id)">删除</el-button>
                 </template>
               </el-table-column>    
@@ -33,7 +33,7 @@
           <!-- 角色设置 -->
           <!-- 公司信息 -->
           <el-tab-pane label="公司信息" name="second">
-            <el-alert title="消息提示的文案" type="info"></el-alert>
+            <el-alert title="消息提示的文案" type="info"  :closable="false"></el-alert>
             <el-form label-width="120px"  >
               <el-form-item  label="企业名称" style="width:400px" >
                 <el-input disabled v-model="formDate.name"></el-input>
@@ -57,11 +57,29 @@
         <!-- /标签页 -->
       </el-card>
     </div>
+    <!-- 放置弹层组件 -->
+    <el-dialog :visible='showDialog' title="编辑部门" @close="cancelEdit">
+      <el-form label-width="120px" :model="roleForm" :rules="rules" ref="roleForm">
+        <el-form-item label="角色名称" prop="name" >
+          <el-input v-model="roleForm.name" ></el-input>
+        </el-form-item>
+        <el-form-item label="角色描述">
+          <el-input v-model="roleForm.description"></el-input>
+        </el-form-item>
+        <el-row type='flex' justify="center">
+          <el-col :span="8">
+            <el-button size="small" type="info" @click="cancelEdit">取消</el-button>
+            <el-button size="small" type="primary" @click="btnOk">确定</el-button>
+          </el-col>
+        </el-row>
+      </el-form>
+    </el-dialog>
+    <!-- /放置弹层组件 -->
   </div>
 </template>
 
 <script>
-import {getRoleList,getCompanyInfo,deleteRole} from '@/api/setting'
+import {getRoleList,getCompanyInfo,deleteRole,getRoleDetail,updateRole,addRole} from '@/api/setting'
 import {mapGetters} from 'vuex'
 export default {
   data() {
@@ -75,6 +93,16 @@ export default {
       activeName: 'first',
       formDate: {
         // 公司信息
+      },
+      showDialog: false,
+      roleForm:{
+        name:'',
+        description:''
+      },
+      rules: {
+        name:[
+          {required:true,message:'角色名称不能为空!',trigger:'blur'},
+        ]
       }
     }
   },
@@ -119,11 +147,45 @@ export default {
             message: '已取消删除'
           })      
         })
+    },
+    /* 编辑角色 */
+    async editRole(id) {
+
+      this.roleForm = await getRoleDetail(id)
+      this.showDialog = true
+    },
+    /* 提交表单 */
+    async btnOk() {
+      try {
+        await this.$refs.roleForm.validate()
+        if(this.roleForm.id) {
+          /* 编辑 */
+          await updateRole(this.roleForm)
+        } else {
+          // 新增角色
+          await addRole(this.roleForm)
+        }
+        this.getRolesList()
+        this.$message.success('角色数据更新成功!')
+        this.cancelEdit()
+      } catch (error) {
+      }
+    },
+    /* 取消编辑 */
+    cancelEdit() {
+      this.roleForm ={
+        name:'',
+        description:''
+      }
+      this.$refs.roleForm.resetFields()
+      this.showDialog = false
     }
   }
 }
 </script>
 
 <style>
-
+.el-alert{
+  margin:20px 0;
+}
 </style>
