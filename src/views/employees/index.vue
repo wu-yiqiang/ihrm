@@ -9,7 +9,7 @@
         <template v-slot:after>
           <el-button size="middle" type="success">导入</el-button>
           <el-button size="middle" type="danger">导出</el-button>
-          <el-button size="middle" type="primary">新增员工</el-button>
+          <el-button size="middle" type="primary" @click="showDialog = true">新增员工</el-button>
         </template>
       </pageTools>
       <!-- 放置表格组件 -->
@@ -50,12 +50,16 @@
       </el-card>
       <!-- 放置表格组件 -->
     </div>
+    <!-- 放置弹层 -->
+    <addEmployee :showDialog.sync="showDialog"></addEmployee>
+    <!-- /放置弹层 -->
   </div>
 </template>
 
 <script>
 import {getEmployeesLists,deleteEmployee} from '@/api/employees'
 import EmployeeEnum from '@/api/constant/employees'
+import addEmployee from "./components/add-employee"
 export default {
   data() {
     return {
@@ -65,8 +69,12 @@ export default {
         total:0,
       },
       loding: false,
-      list :[]
+      list :[],
+      showDialog: false
     }
+  },
+  components: {
+    addEmployee
   },
   created() {
     this.getEmployeesLists()
