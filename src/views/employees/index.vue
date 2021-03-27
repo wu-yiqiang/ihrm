@@ -7,7 +7,7 @@
         </template>
 
         <template v-slot:after>
-          <el-button size="middle" type="success">导入</el-button>
+          <el-button size="middle" type="success" @click="$router.push('/import')">导入</el-button>
           <el-button size="middle" type="danger">导出</el-button>
           <el-button size="middle" type="primary" @click="showDialog = true">新增员工</el-button>
         </template>

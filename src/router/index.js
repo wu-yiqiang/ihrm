@@ -50,6 +50,14 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: "/import",
+    component: Layout,
+    hidden: true,
+    children: [
+      {path:'',component: () => import('@/views/import')}
+    ]
+  },
+  {
     path: '/401',
     component: () => import('@/views/error-page/401'),
     hidden: true

@@ -56,13 +56,13 @@ export default {
     return {
       EmployeeEnum,
         formData: {
-        username: '',
-        mobile: '',
-        formOfEmployment: '',
-        workNumber: '',
-        departmentName: '',
-        timeOfEntry: '',
-        correctionTime: ''
+          username: '',
+          mobile: '',
+          formOfEmployment: '',
+          workNumber: '',
+          departmentName: '',
+          timeOfEntry: '',
+          correctionTime: ''
       },
       treeDate: [],
       rules: {
