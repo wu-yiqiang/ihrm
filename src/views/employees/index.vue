@@ -33,7 +33,7 @@
           </el-table-column>
           <el-table-column label="操作" sortable="" fixed="right" width="280" align="center">
             <template slot-scope="scoped">
-              <el-button type="text" size="small">查看</el-button>
+              <el-button type="text" size="small" @click="to(scoped.row.id)">查看</el-button>
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
@@ -155,6 +155,10 @@ export default {
           return item[headers[key]]
         })
       })
+    },
+    /* 路由跳转 */
+    to (id) {
+      this.$router.push(`/employees/detail/${id}`)
     }
   }
 }
