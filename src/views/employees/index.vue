@@ -8,7 +8,7 @@
 
         <template v-slot:after>
           <el-button size="middle" type="success" @click="$router.push('/import')">导入</el-button>
-          <el-button size="middle" type="danger">导出</el-button>
+          <el-button size="middle" type="danger" @click="exportDate">导出</el-button>
           <el-button size="middle" type="primary" @click="showDialog = true">新增员工</el-button>
         </template>
       </pageTools>
@@ -60,6 +60,7 @@
 import {getEmployeesLists,deleteEmployee} from '@/api/employees'
 import EmployeeEnum from '@/api/constant/employees'
 import addEmployee from "./components/add-employee"
+import { formatDate, formatTime } from '@/filters'
 export default {
   data() {
     return {
@@ -116,6 +117,44 @@ export default {
             message: '已取消删除'
           });          
       });
+    },
+    /* 导出员工数据 */
+    exportDate () {
+      import("@/vendor/Export2Excel").then(async excel => {
+        const {rows} = await getEmployeesLists({page:1,size: this.page.total})
+
+        var headers = {
+          '手机号': 'mobile',
+          '姓名': 'username',
+          '入职日期': 'timeOfEntry',
+          '聘用形式': 'formOfEmployment',
+          '转正日期': 'correctionTime',
+          '工号': 'workNumber',
+          '部门': 'departmentName'
+        }
+        const data = this.formatJson(headers,rows)
+        excel.export_json_to_excel({  
+          header: Object.keys(headers),
+          data: data,
+          filename:'员工工资表'
+        })
+      })
+    },
+    /* 格式化数据 */
+    formatJson(headers,rows) {
+      return rows.map(item => {
+        return Object.keys(headers).map( key => {
+          if (headers[key] && (headers[key] == 'timeOfEntry' || headers[key] == 'correctionTime')) {
+            return formatDate(item[headers[key]])
+          } else if (headers[key] == 'formOfEmployment') {
+            const flag = EmployeeEnum.hireType.find(obj => {
+              return obj.id == item[headers[key]]
+            })
+            return flag? flag.value : '未知'
+          } 
+          return item[headers[key]]
+        })
+      })
     }
   }
 }
