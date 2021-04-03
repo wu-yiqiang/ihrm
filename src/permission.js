@@ -10,7 +10,12 @@ router.beforeEach( async (from, to, next) => {
       next('/')
     } else {
       if (!store.getters.userId) {
-        await store.dispatch('getUserInfo')
+        const { roles } = await store.dispatch('getUserInfo')
+        //筛选用户可用路由
+        const routes = await store.dispatch('permission/filterRouter', roles.menus)
+        router.addRoutes(routes)
+        console.log('***调试中*******', routes)
+        next(to.path)
       }
       next()
     }

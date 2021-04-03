@@ -41,10 +41,19 @@ export function updateRole(date){
 }
 
 /* 新增角色 */
-export function addRole(date){
+export function addRole(data){
   return request({  
     method: 'POST',
     url: '/sys/role',
-    date
+    data
+  })
+}
+
+/* 更新权限 */
+export function assignPerm(data){
+  return request({  
+    method: 'PUT',
+    url: '/sys/role/assignPrem',
+    data
   })
 }

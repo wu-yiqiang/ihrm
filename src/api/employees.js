@@ -90,3 +90,14 @@ export function updateJob(data) {
     data
   });
 }
+
+/**
+ * 保存岗位信息
+ * ****/
+ export function assignRoles(data) {
+  return request({
+    url: '/sys/user/assignRoles',
+    method: "put",
+    data
+  });
+}

@@ -2,6 +2,9 @@
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
 
+// 打包
+// const 
+
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
@@ -59,6 +62,9 @@ module.exports = {
         '@': resolve('src')
       }
     }
+    // externals: {
+    //   'element-ui': 'ELEMENT',
+    // }
   },
   chainWebpack(config) {
     // it can improve the speed of the first screen, it is recommended to turn on preload

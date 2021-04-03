@@ -9,6 +9,7 @@ const getters = {
   staffPhoto: state => state.user.userInfo.staffPhoto, // 员工头像快捷访问方式
   avatar: state => state.user.avatar,
   name: state => state.user.userInfo.username, // 建立对用户名的快捷访问
+  routers: state => state.permission.router,  // 建立左侧路由快捷访问
   introduction: state => state.user.introduction,
   roles: state => state.user.roles,
   permission_routes: state => state.permission.routes,
